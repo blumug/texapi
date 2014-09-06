@@ -1,0 +1,38 @@
+# Python bytecode:
+*.py[co]
+
+# venv
+venv
+
+# Packaging files:
+*.egg*
+
+# Editor temp files:
+*.swp
+*~
+
+# Sphinx docs:
+build
+
+# SQLite3 database files:
+*.db
+
+# Logs:
+*.log
+
+# static files
+media/static/
+media/attachments/
+static/cache/
+media/cache/
+media/min/
+
+# vagrant
+vagrant/venv
+vagrant/.vagrant
+
+# PyCharm
+.idea
+.DS_Store
+
+# running
