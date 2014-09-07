@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 
 from rest_framework.authtoken.models import Token
 
-from api_users.models import AppUser
+from api_users.models import ApiUser
 
 
 def generate_api_user(username='user', email='test@test.com', password='password', login=True):
@@ -25,7 +25,7 @@ def generate_api_user(username='user', email='test@test.com', password='password
     header = None
     user = User.objects.create(
         username=username, email=email, is_active=True)
-    AppUser.objects.create(user=user)
+    ApiUser.objects.create(user=user)
     user.set_password('password')
     user.save()
 

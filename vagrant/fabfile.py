@@ -37,6 +37,7 @@ def install():
         'zlib1g-dev',
         'memcached',
         'openjdk-7-jre-headless',
+        'enchant',
     ], update=False)
 
     sudo("cp /vagrant/wkhtmltopdf /usr/bin/")

@@ -37,3 +37,6 @@ markdown==2.4.1
 breadability==0.1.20
 sumy==0.3.0
 tweepy==2.3
+pyenchant==1.6.6
+guess_language-spirit==0.5a5
+numpy==1.9.0
