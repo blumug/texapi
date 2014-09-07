@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import permissions
 
-from serializers import ResultSerializer, AnalyzeSerializer
+from serializers import ResultSerializer, AnalyzeSerializer, TextSerializer
 from text.models import Text
 
 
@@ -38,7 +38,12 @@ class AnalyzeView(generics.CreateAPIView):
             text.parse()
             text.save()
 
-        self.serializer_class = ResultSerializer()
-        serializer = self.get_serializer({'success': True})
-        return Response(serializer.data)
+            self.serializer_class = TextSerializer
+            serializer = self.get_serializer(text)
+            return Response(serializer.data)
+
+        else:
+            self.serializer_class = ResultSerializer
+            serializer = self.get_serializer({'success': False})
+            return Response(serializer.data)
 analyze = AnalyzeView.as_view()
