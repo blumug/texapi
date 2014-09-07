@@ -12,11 +12,6 @@ class TextPlainView(TemplateView):
 from django.contrib import admin
 admin.autodiscover()
 
-js_info_dict = {
-    'packages': ('texapi.backoffice',),
-}
-
-
 urlpatterns = patterns('',
 
     # Examples:
@@ -27,31 +22,15 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # rest-swagger docs
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-
     url(r'^docs/', include('rest_framework_swagger.urls')),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^backoffice/', include('backoffice.urls')),
-    (r'^i18n/', include('django.conf.urls.i18n')),
-
-    (r'^api/v1/', include('articles.api.urls')),
-
+    (r'^api/v1/', include('text.api.urls')),
 
     url(r'^robots\.txt$', TextPlainView.as_view(template_name='robots.txt')),
-
-    url(r'^search/', include('search.urls')),
-    url(r'^newsletter/', include('newsletter.urls')),
-    url(r'^', include('articles.urls')),
 )
-
-if 'rosetta' in settings.INSTALLED_APPS:
-    urlpatterns = patterns('',
-        url(r'^rosetta/', include('rosetta.urls')),
-    ) + urlpatterns
-
 
 if settings.LOCAL_MODE:
     urlpatterns += patterns('',
