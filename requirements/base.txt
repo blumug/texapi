@@ -36,3 +36,4 @@ python-dateutil==2.2
 markdown==2.4.1
 breadability==0.1.20
 sumy==0.3.0
+tweepy==2.3

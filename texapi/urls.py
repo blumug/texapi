@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     (r'^api/v1/', include('text.api.urls')),
+    (r'^api/v1/', include('api_users.api.urls')),
 
     url(r'^robots\.txt$', TextPlainView.as_view(template_name='robots.txt')),
 )

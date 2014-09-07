@@ -6,9 +6,7 @@ from django.contrib.auth import get_user_model
 
 from core.models import DateTimeModel
 
-
 import signals as api_users_signals
-from geoposition.fields import GeopositionField
 
 
 class ApiUser(DateTimeModel):
@@ -31,5 +29,4 @@ class ApiUser(DateTimeModel):
 
 def install_handlers():
     signals.post_save.connect(api_users_signals.create_auth_token, sender=get_user_model())
-    signals.post_save.connect(api_users_signals.api_user_updated, sender=ApiUser)
 install_handlers()

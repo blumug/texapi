@@ -191,6 +191,13 @@ MIDDLEWARE_CLASSES = (
 )
 ########## END MIDDLEWARE CONFIGURATION
 
+########## AUTHENTICATION CONFIGURATION
+AUTHENTICATION_BACKENDS = (
+    'core.backends.EmailAuthBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+########## END AUTHENTICATION CONFIGURATION
+
 
 ########## URL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
@@ -396,3 +403,9 @@ COMPRESS_OUTPUT_DIR = 'min'
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
 DEFAULT_FROM_EMAIL = "Notification Textapi <noreply@texapi.fr>"
 ########## END EMAIL SETTINGS
+
+
+########## TWITTER CONFIGURATION
+TWITTER_APP_CONSUMER_KEY = 'swuPpUyp30qaahEqMUjfA'
+TWITTER_APP_CONSUMER_SECRET = 'scvzTnoZVnJRRDdapmecJAvlDYGo2hHjTbBiKxLZF0'
+########## END TWITTER CONFIGURATION
