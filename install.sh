@@ -1,4 +1,5 @@
 #!/bin/bash
+source ~/vars.sh
 curl -O https://pypi.python.org/packages/source/v/virtualenv/virtualenv-1.10.1.tar.gz
 tar xzf virtualenv-1.10.1.tar.gz
 rm virtualenv-1.10.1.tar.gz
