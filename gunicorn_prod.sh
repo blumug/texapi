@@ -6,7 +6,7 @@ NUM_WORKERS=3
 ADDRESS=127.0.0.1:8011
 cd /home/texapi/
 source ./vars.sh
-cd /var/www/texapi/root/texapi/
+cd /var/www/texapi/root/
 source /var/www/texapi/root/venv/bin/activate
 test -d $LOGDIR || mkdir -p $LOGDIR
 exec gunicorn texapi.wsgi:application -w $NUM_WORKERS --bind=$ADDRESS \
