@@ -1,2 +1,2 @@
 #!/bin/sh
-venv/bin/pip pip install -r requirements/production.txt
+venv/bin/pip install -r requirements/production.txt
