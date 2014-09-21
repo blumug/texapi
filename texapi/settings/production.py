@@ -20,7 +20,7 @@ def get_env_setting(setting):
 
 ########## HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = ['texapi.jbl2024.com', 'texapi.adx-technologies.com', 'vps85036.ovh.net', 'texapi.fr', 'www.texapi.fr', 'www.texapi.com', 'texapi.com']
+ALLOWED_HOSTS = ['textapi.rechord.net']
 # Waiting for ssl certificate
 #SESSION_COOKIE_SECURE = True
 #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
@@ -89,7 +89,7 @@ SECRET_KEY = get_env_setting('SECRET_KEY')
 
 ########## SENTRY CONFIGURATION
 RAVEN_CONFIG = {
-    'dsn': 'http://36d203686e87466bb9e552e941359452:b042d831d211408d9e48ddafae600c9d@sentry.jbl2024.com/14',
+    'dsn': 'http://5dfc8c7abbbd4f0ca11b66a14fadac4c:3c800123572e48e4a165cc0fb2455f6b@sentry.jbl2024.com/17',
 }
 ########## END SENTRY CONFIGURATION
 
