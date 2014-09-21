@@ -17,6 +17,8 @@ from guess_language import guess_language_name
 
 from core.models import DateTimeModel
 
+import settings as text_settings
+
 
 class Text(DateTimeModel):
     """ An api user """
@@ -26,6 +28,9 @@ class Text(DateTimeModel):
     language = models.CharField(_('language'), max_length=50, blank=True)
     summary = models.TextField(_('summary'), blank=True)
     readable = models.TextField(_('readable'), blank=True)
+    status = models.CharField(_('layout'), max_length=32,
+                              choices=text_settings.TEXT_STATUS_CHOICES,
+                              default=text_settings.TEXT_STATUS_PENDING)
 
     def parse(self):
         self._get_raw()

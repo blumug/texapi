@@ -5,4 +5,5 @@ from models import Text
 class TextAdmin(admin.ModelAdmin):
     list_display = ('id', 'url', 'user')
     search_fields = ['url', ]
+    list_filter = ['status', ]
 admin.site.register(Text, TextAdmin)
