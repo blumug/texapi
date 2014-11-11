@@ -11,7 +11,7 @@ def process_text(text_id):
     from models import Text
     logger.debug('processing text %d' % (text_id))
     text = get_object_or_None(Text, id=text_id)
-    if text is not None and text.status == text_settings.TEXT_STATUS_PENDING:
+    if text is not None:
         text.status = text_settings.TEXT_STATUS_PROCESSING
         text.save()
 
