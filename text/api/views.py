@@ -36,7 +36,9 @@ class AnalyzeView(generics.CreateAPIView):
         if serializer.is_valid():
             url = serializer.object['url']
             text, _created = Text.objects.get_or_create(url=url, user=request.user)
-            tasks.process_text.delay(text.id)
+            result = tasks.process_text.delay(text.id)
+            Text.objects.filter(id=text.id).update(task_id=result.id)
+            text.task_id = result.id
             self.serializer_class = TextSerializer
             serializer = self.get_serializer(text)
             return Response(serializer.data)
@@ -46,3 +48,24 @@ class AnalyzeView(generics.CreateAPIView):
             serializer = self.get_serializer({'success': False})
             return Response(serializer.data)
 analyze = AnalyzeView.as_view()
+
+
+class TextsView(generics.ListAPIView):
+    """
+    List texts
+    """
+    permission_classes = (TextPermission, )
+    serializer_class = TextSerializer
+    model = Text
+texts = TextsView.as_view()
+
+
+class TextView(generics.RetrieveAPIView):
+    """
+    Retrieve text
+    """
+    permission_classes = (TextPermission, )
+    serializer_class = TextSerializer
+    model = Text
+    lookup_field = 'task_id'
+text = TextView.as_view()

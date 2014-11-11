@@ -49,12 +49,27 @@ class TestTask(TestCase):
         self.user.save()
 
     def test_task(self):
-        url = 'http://jbl42.com/'
+        c = Client()
+        c.login(username='user', password='password')
 
-        text = Text.objects.create(url=url, user=self.user)
-        self.assertEquals(text.status, text_settings.TEXT_STATUS_PENDING)
-
-        tasks.process_text(text.id)
-
-        text = Text.objects.get(id=text.id)
+        url = reverse('api_text_analyze')
+        data = {
+            'url': 'http://jbl42.com'
+        }
+        res = c.post(url, json.dumps(data), content_type='application/json')
+        self.assertEquals(res.status_code, 200)
+        data = json.loads(res.content)
+        text = Text.objects.get(id=data.get('id'))
         self.assertEquals(text.status, text_settings.TEXT_STATUS_FINISHED)
+
+        url = reverse('api_texts')
+        res = c.get(url, content_type='application/json')
+        self.assertEquals(res.status_code, 200)
+        data = json.loads(res.content)
+        self.assertEquals(data.get('count'), 1)
+
+        url = reverse('api_text', args=[text.task_id])
+        res = c.get(url, content_type='application/json')
+        self.assertEquals(res.status_code, 200)
+        data = json.loads(res.content)
+        self.assertEquals(data.get('id'), text.id)

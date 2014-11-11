@@ -326,6 +326,7 @@ CELERY_DEFAULT_QUEUE = 'texapi'
 CELERY_QUEUES = (
     Queue('texapi', Exchange('texapi'), routing_key='texapi'),
 )
+CELERY_ACCEPT_CONTENT = ['pickle']
 
 from celery.schedules import crontab
 ########## END CELERY

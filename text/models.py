@@ -31,6 +31,7 @@ class Text(DateTimeModel):
     status = models.CharField(_('layout'), max_length=32,
                               choices=text_settings.TEXT_STATUS_CHOICES,
                               default=text_settings.TEXT_STATUS_PENDING)
+    task_id = models.CharField(_('task id'), max_length=255, blank=True)
 
     def parse(self):
         self._get_raw()
