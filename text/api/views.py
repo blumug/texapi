@@ -8,7 +8,7 @@ from text import tasks
 
 
 class TextPermission(permissions.BasePermission):
-    """Permission for text:
+    """Permission for text
     """
 
     def has_permission(self, request, view):
@@ -18,7 +18,9 @@ class TextPermission(permissions.BasePermission):
             return True
 
     def has_object_permission(self, request, view, obj):
-        return True
+        if request.user.is_authenticated() is False:
+            return False
+        return obj.user.id == request.user.id
 
 
 class AnalyzeView(generics.CreateAPIView):
@@ -30,7 +32,7 @@ class AnalyzeView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         """
-        Create a new attachement
+        Start a new analysis
         """
         serializer = self.serializer_class(data=request.DATA)
         if serializer.is_valid():

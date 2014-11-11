@@ -59,7 +59,7 @@ class TestTask(TestCase):
         res = c.post(url, json.dumps(data), content_type='application/json')
         self.assertEquals(res.status_code, 200)
         data = json.loads(res.content)
-        text = Text.objects.get(id=data.get('id'))
+        text = Text.objects.get(task_id=data.get('id'))
         self.assertEquals(text.status, text_settings.TEXT_STATUS_FINISHED)
 
         url = reverse('api_texts')
@@ -72,4 +72,4 @@ class TestTask(TestCase):
         res = c.get(url, content_type='application/json')
         self.assertEquals(res.status_code, 200)
         data = json.loads(res.content)
-        self.assertEquals(data.get('id'), text.id)
+        self.assertEquals(data.get('id'), text.task_id)
