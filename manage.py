@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!venv/bin/python
 import sys
 import os
 from os.path import abspath, dirname, join

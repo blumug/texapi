@@ -4,6 +4,7 @@ from rest_framework import permissions
 
 from serializers import ResultSerializer, AnalyzeSerializer, TextSerializer
 from text.models import Text
+from text import tasks
 
 
 class TextPermission(permissions.BasePermission):
@@ -35,9 +36,7 @@ class AnalyzeView(generics.CreateAPIView):
         if serializer.is_valid():
             url = serializer.object['url']
             text, _created = Text.objects.get_or_create(url=url, user=request.user)
-            text.parse()
-            text.save()
-
+            tasks.process_text.delay(text.id)
             self.serializer_class = TextSerializer
             serializer = self.get_serializer(text)
             return Response(serializer.data)
