@@ -20,7 +20,7 @@ def get_env_setting(setting):
 
 ########## HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
-ALLOWED_HOSTS = ['textapi.rechord.net']
+ALLOWED_HOSTS = ['textapi.rechord.net', 'texapi.jbl2024.com']
 # Waiting for ssl certificate
 #SESSION_COOKIE_SECURE = True
 #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
