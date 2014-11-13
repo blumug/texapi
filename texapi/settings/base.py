@@ -364,7 +364,7 @@ SWAGGER_SETTINGS = {
     ],
     "api_key": '',  # An API key
     "is_authenticated": True,  # Set to True to enforce user authentication,
-    "is_superuser": True,  # Set to True to enforce admin only access
+    "is_superuser": False,  # Set to True to enforce admin only access
 }
 ########## END REST SWAGGER CONFIGURATION
 
