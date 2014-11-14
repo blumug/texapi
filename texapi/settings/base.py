@@ -363,7 +363,7 @@ SWAGGER_SETTINGS = {
         'delete'
     ],
     "api_key": '',  # An API key
-    "is_authenticated": True,  # Set to True to enforce user authentication,
+    "is_authenticated": False,  # Set to True to enforce user authentication,
     "is_superuser": False,  # Set to True to enforce admin only access
 }
 ########## END REST SWAGGER CONFIGURATION
