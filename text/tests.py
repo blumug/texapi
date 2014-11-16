@@ -73,3 +73,32 @@ class TestTask(TestCase):
         self.assertEquals(res.status_code, 200)
         data = json.loads(res.content)
         self.assertEquals(data.get('id'), text.task_id)
+
+    def test_forbidden_urls(self):
+        c = Client()
+        c.login(username='user', password='password')
+
+        url = reverse('api_text_analyze')
+        data = {
+            'url': 'http://localhost'
+        }
+        res = c.post(url, json.dumps(data), content_type='application/json')
+        self.assertEquals(res.status_code, 400)
+
+        data = {
+            'url': 'https://localhost'
+        }
+        res = c.post(url, json.dumps(data), content_type='application/json')
+        self.assertEquals(res.status_code, 400)
+
+        data = {
+            'url': 'http://127.0.0.1'
+        }
+        res = c.post(url, json.dumps(data), content_type='application/json')
+        self.assertEquals(res.status_code, 400)
+
+        data = {
+            'url': 'https://127.0.0.1'
+        }
+        res = c.post(url, json.dumps(data), content_type='application/json')
+        self.assertEquals(res.status_code, 400)

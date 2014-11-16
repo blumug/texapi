@@ -66,3 +66,8 @@ class UnauthorizedException(ApiException):
 class CommunicationErrorException(ApiException):
     code = 8
     status_code = 401
+
+
+class BadArgumentErrorException(ApiException):
+    code = 9
+    status_code = 400
