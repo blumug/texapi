@@ -46,6 +46,9 @@ class Text(DateTimeModel):
         r = requests.get(self.url)
         if r.status_code != 200:
             return
+
+        if 'meta charset="UTF-8"' in r.text or 'meta charset="utf-8"' in r.text:
+            r.encoding = 'utf-8'
         self.raw = r.text
 
     def _get_readable(self):
