@@ -1,4 +1,5 @@
 import requests
+from urlparse import urlparse
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -13,6 +14,7 @@ from sumy.summarizers.lsa import LsaSummarizer as Summarizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 
+from pyquery import PyQuery as pq
 from guess_language import guess_language_name
 
 from core.models import DateTimeModel
@@ -40,6 +42,17 @@ class Text(DateTimeModel):
         self._get_summary()
         self.save()
 
+    def _fix_images_path(self, html, base_url):
+        data = pq(html)
+        images = data('img')
+        for image in images:
+            image = pq(images)
+            src = image.attr('src')
+            if src is not None and src.startswith('/'):
+                src = u'%s%s' % (base_url, src)
+            image.attr('src', src)
+        return data.html()
+
     def _get_raw(self):
         if self.url == '':
             return
@@ -55,6 +68,9 @@ class Text(DateTimeModel):
         if self.raw == '':
             return
         self.readable = Article(self.raw).readable
+
+        base_url = self._get_base_url()
+        self.readable = self._fix_images_path(self.readable, base_url)
 
     def _get_language(self):
         if self.readable == '':
@@ -81,6 +97,20 @@ class Text(DateTimeModel):
                 summary.append('<p>%s</p>' % (unicode(sentence)))
 
         self.summary = ''.join(summary)
+
+    def _get_base_url(self):
+        """
+        Args:
+            self.url: https://medium.com/foo/bar
+
+        Returns:
+            base_url: https://medium.com
+        """
+        if self.url is None:
+            return None
+        parsed_uri = urlparse(self.url)
+        domain = '{uri.scheme}://{uri.netloc}'.format(uri=parsed_uri)
+        return domain
 
     class Meta:
         verbose_name = _('text')

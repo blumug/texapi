@@ -1,9 +1,12 @@
 import json
+import os
 
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test.client import Client
+
+from mock import patch
 
 import settings as text_settings
 import tasks
@@ -17,7 +20,24 @@ class TestApi(TestCase):
         self.user.set_password('password')
         self.user.save()
 
-    def test_analyze_text(self):
+    def mock_requests_get(self, *args, **kwargs):
+        class RequestResponse(object):
+            """
+            Fake requests response object
+            """
+            status_code = 200
+
+            @property
+            def text(self):
+                html_filename = os.path.join(os.path.dirname(__file__), 'fixtures/google.html')
+                with open(html_filename, "r") as html_file:
+                    return html_file.read()
+
+        return RequestResponse()
+
+    @patch('requests.get')
+    def test_analyze_text(self, mock_request):
+        mock_request.side_effect = self.mock_requests_get
         url = reverse('api_text_analyze')
         c = Client()
 
@@ -35,11 +55,73 @@ class TestParse(TestCase):
         self.user.set_password('password')
         self.user.save()
 
-    def test_parse(self):
-        url = 'http://jbl42.com/'
+    def test_get_base_url(self):
+        url = 'https://medium.com/the-right-tool-for-the-right-job/email-patterns-for-web-apps-c6303f3b6e8c'
+        text = Text.objects.create(url=url, user=self.user)
+        self.assertEquals("https://medium.com", text._get_base_url())
+
+    def mock_requests_get(self, *args, **kwargs):
+        class RequestResponse(object):
+            """
+            Fake requests response object
+            """
+            status_code = 200
+
+            @property
+            def text(self):
+                html_filename = os.path.join(os.path.dirname(__file__), 'fixtures/medium.html')
+                with open(html_filename, "r") as html_file:
+                    return html_file.read()
+
+        return RequestResponse()
+
+    @patch('requests.get')
+    def test_parse(self, mock_request):
+        mock_request.side_effect = self.mock_requests_get
+
+        url = 'https://medium.com/the-right-tool-for-the-right-job/email-patterns-for-web-apps-c6303f3b6e8c'
 
         text = Text.objects.create(url=url, user=self.user)
         text.parse()
+
+
+class TestImages(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create(username='user', is_active=True)
+        self.user.set_password('password')
+        self.user.save()
+
+    def test_get_base_url(self):
+        url = 'https://medium.com/the-right-tool-for-the-right-job/email-patterns-for-web-apps-c6303f3b6e8c'
+        text = Text.objects.create(url=url, user=self.user)
+        self.assertEquals("https://medium.com", text._get_base_url())
+
+    def mock_requests_get(self, *args, **kwargs):
+        class RequestResponse(object):
+            """
+            Fake requests response object
+            """
+            status_code = 200
+
+            @property
+            def text(self):
+                html_filename = os.path.join(os.path.dirname(__file__), 'fixtures/relative_images.html')
+                with open(html_filename, "r") as html_file:
+                    return html_file.read()
+
+        return RequestResponse()
+
+    @patch('requests.get')
+    def test_parse(self, mock_request):
+        mock_request.side_effect = self.mock_requests_get
+
+        url = 'https://foo.com/bar/meuh.html'
+
+        text = Text.objects.create(url=url, user=self.user)
+        text.parse()
+        self.assertTrue('/foo/bar/test.png' in text.raw)
+        self.assertTrue('https://foo.com/foo/bar/test.png' in text.readable)
 
 
 class TestTask(TestCase):
@@ -48,13 +130,31 @@ class TestTask(TestCase):
         self.user.set_password('password')
         self.user.save()
 
-    def test_task(self):
+    def mock_requests_get(self, *args, **kwargs):
+        class RequestResponse(object):
+            """
+            Fake requests response object
+            """
+            status_code = 200
+
+            @property
+            def text(self):
+                html_filename = os.path.join(os.path.dirname(__file__), 'fixtures/medium.html')
+                with open(html_filename, "r") as html_file:
+                    return html_file.read()
+
+        return RequestResponse()
+
+    @patch('requests.get')
+    def test_task(self, mock_request):
+        mock_request.side_effect = self.mock_requests_get
+
         c = Client()
         c.login(username='user', password='password')
 
         url = reverse('api_text_analyze')
         data = {
-            'url': 'http://jbl42.com'
+            'url': 'https://medium.com/the-right-tool-for-the-right-job/email-patterns-for-web-apps-c6303f3b6e8c'
         }
         res = c.post(url, json.dumps(data), content_type='application/json')
         self.assertEquals(res.status_code, 200)
