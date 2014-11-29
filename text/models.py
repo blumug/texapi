@@ -23,6 +23,7 @@ import settings as text_settings
 
 
 class Text(DateTimeModel):
+
     """ An api user """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'))
     url = models.CharField(_('url'), max_length=512, blank=True)
@@ -60,7 +61,7 @@ class Text(DateTimeModel):
         if r.status_code != 200:
             return
 
-        if 'meta charset="UTF-8"' in r.text or 'meta charset="utf-8"' in r.text:
+        if 'meta charset="UTF-8"' in r.text or 'meta charset="utf-8"' in r.text or 'meta charset="utf8"' in r.text or "meta charset='utf8'" in r.text:
             r.encoding = 'utf-8'
         self.raw = r.text
 
@@ -85,7 +86,8 @@ class Text(DateTimeModel):
         if language == '':
             language = 'english'
 
-        parser = HtmlParser.from_string(self.readable, self.url, Tokenizer(language))
+        parser = HtmlParser.from_string(
+            self.readable, self.url, Tokenizer(language))
         stemmer = Stemmer(language)
         summarizer = Summarizer(stemmer)
         summarizer.stop_words = get_stop_words(language)
