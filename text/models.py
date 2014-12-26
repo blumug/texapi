@@ -50,10 +50,11 @@ class Text(DateTimeModel):
             image = pq(image)
             src = image.attr('src')
             if src is not None:
-                if src.startswith('/'):
-                    src = u'%s%s' % (base_url, src)
-                elif src.startswith('http') is False:
-                    src = u'%s/%s' % (base_url, src)
+                if src.startswith('//') is False:
+                    if src.startswith('/') is True:
+                        src = u'%s%s' % (base_url, src)
+                    elif src.startswith('http') is False:
+                        src = u'%s/%s' % (base_url, src)
             image.attr('src', src)
 
         return data.html()
