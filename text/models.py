@@ -52,7 +52,7 @@ class Text(DateTimeModel):
             if src is not None:
                 if src.startswith('/'):
                     src = u'%s%s' % (base_url, src)
-                else:
+                elif src.startswith('http') is False:
                     src = u'%s/%s' % (base_url, src)
             image.attr('src', src)
 
