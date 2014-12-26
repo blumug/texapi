@@ -47,11 +47,15 @@ class Text(DateTimeModel):
         data = pq(html)
         images = data('img')
         for image in images:
-            image = pq(images)
+            image = pq(image)
             src = image.attr('src')
-            if src is not None and src.startswith('/'):
-                src = u'%s%s' % (base_url, src)
+            if src is not None:
+                if src.startswith('/'):
+                    src = u'%s%s' % (base_url, src)
+                else:
+                    src = u'%s/%s' % (base_url, src)
             image.attr('src', src)
+
         return data.html()
 
     def _get_raw(self):

@@ -121,6 +121,8 @@ class TestImages(TestCase):
         text = Text.objects.create(url=url, user=self.user)
         text.parse()
         self.assertTrue('/foo/bar/test.png' in text.raw)
+        self.assertTrue('boo.png' in text.raw)
+        self.assertTrue('https://foo.com/boo.png' in text.readable)
         self.assertTrue('https://foo.com/foo/bar/test.png' in text.readable)
 
 
