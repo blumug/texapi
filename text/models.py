@@ -136,7 +136,7 @@ class Text(DateTimeModel):
             return
 
         data = pq(self.raw)
-        self.title = data('header')('title').text()
+        self.title = data('head')('title').text()
 
     def _get_base_url(self):
         """

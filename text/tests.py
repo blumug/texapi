@@ -163,7 +163,7 @@ class TestTitle(TestCase):
         text = Text.objects.create(url=url, user=self.user)
         text.parse()
 
-        self.assertEquals('This is a title', text.title)
+        self.assertEquals('12 extensions Chrome pour Web Designers - #Olybop', text.title)
 
 
 class TestTags(TestCase):
