@@ -35,12 +35,16 @@ class Text(DateTimeModel):
                               choices=text_settings.TEXT_STATUS_CHOICES,
                               default=text_settings.TEXT_STATUS_PENDING)
     task_id = models.CharField(_('task id'), max_length=255, blank=True)
+    tags = models.TextField(_('tags'), blank=True)
+    title = models.TextField(_('title'), blank=True)
 
     def parse(self):
         self._get_raw()
         self._get_readable()
         self._get_language()
         self._get_summary()
+        self._get_tags()
+        self._get_title()
         self.save()
 
     def _fix_images_path(self, html, base_url):
@@ -104,6 +108,35 @@ class Text(DateTimeModel):
                 summary.append('<p>%s</p>' % (unicode(sentence)))
 
         self.summary = ''.join(summary)
+
+    def _get_tags(self):
+        if self.raw == '':
+            return
+
+        tags = []
+        data = pq(self.raw)
+        metas = data('meta')
+        for meta in metas:
+            meta = pq(meta)
+            if meta.attr('property') == 'article:tag':
+                tags.append(meta.attr('content'))
+            if meta.attr('name') == 'keywords':
+                content = meta.attr('content')
+                if content is not None:
+                    items = content.split(",")
+                    for item in items:
+                        tags.append(item.strip())
+
+        tags = list(set(tags))
+        if len(tags) > 0:
+            self.tags = " ".join(tags)
+
+    def _get_title(self):
+        if self.raw == '':
+            return
+
+        data = pq(self.raw)
+        self.title = data('header')('title').text()
 
     def _get_base_url(self):
         """
