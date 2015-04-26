@@ -26,7 +26,7 @@ class Text(DateTimeModel):
 
     """ An api user """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name=_('user'))
-    url = models.CharField(_('url'), max_length=512, blank=True)
+    url = models.CharField(_('url'), max_length=2048, blank=True)
     raw = models.TextField(_('raw'), blank=True)
     language = models.CharField(_('language'), max_length=50, blank=True)
     summary = models.TextField(_('summary'), blank=True)
