@@ -66,7 +66,7 @@ class Text(DateTimeModel):
     def _get_raw(self):
         if self.url == '':
             return
-        r = requests.get(self.url)
+        r = requests.get(self.url, verify=False)
         if r.status_code != 200:
             return
 
